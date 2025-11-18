@@ -1,0 +1,183 @@
+body{
+    background-color: #94F9F0;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.img_Recent{
+    display: flex;
+}
+
+.img_dash{
+    width: 220px;
+    height: 230px;
+    margin-bottom: 25px;
+    margin-top: 15px;
+    margin-left: 90px;
+}
+
+.Recent_Results{
+    background: #09b8e6;
+    border-radius: 60px;
+    width: 950px; 
+    height: 80px;            
+    display: flex;           
+    justify-content: center; 
+    align-items: center;    
+    font-family: Poppins, sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: white;
+    margin-top: 90px;
+    margin-left: 180px;
+}
+
+
+.DashBoard{
+    font-family: Poppins, sans-serif;
+    background-color: #6DCAE4;
+    border-radius: 60px;    
+    width: 350px;
+    height: 600px;
+    text-align: center;
+    padding-top: 40px;
+    font-size: 21px;
+    margin-left: 40px;
+}
+.nav{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.DashBoard_Box{
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #0a3a46;
+    height: 50px;
+}
+
+.DashBoard_Box:hover{
+    background-color: #94F9F0;
+    padding: 0px;
+    margin-left: 60px;
+    margin-right: 60px;
+    border-radius: 25px;
+    font-weight: bold;
+    height: 50px;
+}
+
+.Dash{
+    margin-top: 12px;
+}
+
+
+
+.Profile_Box{
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #0a3a46;
+    height: 50px;
+    
+}
+
+.Profile_Box:hover{
+    background-color: #94F9F0;
+    padding: 0px;
+    margin-left: 60px;
+    margin-right: 60px;
+    border-radius: 25px;
+    font-weight: bold;
+    height: 50px;
+    
+}
+
+.Profile{
+    margin-top: 12px;
+    color: #0a3a46;
+    text-decoration: none;
+}
+
+.Calculator_Box{
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #0a3a46;
+    height: 50px;
+    
+}
+
+.Calculator_Box:hover{
+    background-color: #94F9F0;
+    padding: 0px;
+    margin-left: 60px;
+    margin-right: 60px;
+    border-radius: 25px;
+    font-weight: bold;
+    height: 50px;
+}
+
+.Calculator{
+    margin-top: 12px;
+}
+
+.Result_Box{
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #0a3a46;
+    height: 50px;
+}
+
+.Result_Box:hover{
+    background-color: #94F9F0;
+    padding: 0px;
+    margin-left: 60px;
+    margin-right: 60px;
+    border-radius: 25px;
+    font-weight: bold;
+    height: 50px;
+}
+
+.Results{
+    margin-top: 12px;
+}
+
+table {
+  font-family: arial, sans-serif;
+  background-color: #ffffff;
+  border-collapse: collapse;
+  width: 1030px;
+  height: 350px;
+  margin-left: 410px;
+  margin-top: -390px;
+  margin-bottom: 10px;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  text-align: center;
+}
+
+button{
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 21px;
+    background-color: #ffffff;
+}

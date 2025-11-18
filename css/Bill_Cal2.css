@@ -1,0 +1,125 @@
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #74CAC3;
+    font-family: Poppins;
+  }
+
+  h2, p {
+    margin: 10px;
+  }
+
+  ul {
+    list-style-type: none;
+      display: flex;
+      justify-content: flex-end; 
+      gap: 40px;
+      padding: 20px 350px; 
+      overflow: hidden;
+      background-color: #74CAC3;
+      font-size: 25px;
+      font-family: 'Roboto', sans-serif;
+      height: 50px;
+      
+  }
+
+  ul li {
+    float: left;
+  }
+
+  ul li a {
+    display: block;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+
+  ul li a:hover {
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    border-radius: 50px;
+    transition: opacity 0.8s;
+    padding-left: 30px;
+    padding-right: 30px;
+    height: 26px;
+    font-size: 25;
+  }
+
+  .ElectricBill{
+      font-family: 'Roboto', sans-serif;
+      text-align: left;
+      margin-top: 60px;
+      margin-left: 91px;
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 60px;
+  }
+
+  .Real-time{
+      font-family: 'Roboto', sans-serif;
+      text-align: left;
+      margin-top: 20px;
+      margin-left: 91px;
+      color: #ffffff;
+      font-weight: normal;
+      font-size: 34px;
+  }
+
+  .p1{
+      font-family: 'Roboto', sans-serif;
+      text-align: left;
+      margin-top: 52px;
+      margin-left: 138px;
+      color: #ffffff;
+      font-weight: normal;
+      font-size: 32px;
+  }
+
+  .p2{
+      font-family: 'Roboto', sans-serif;
+     text-align: left;
+      padding-top: 5px;
+      margin-left: 138px;
+      color: #ffffff;
+      font-weight: normal;
+      font-size: 32px;
+  }
+
+  .p3{
+      font-family: 'Roboto', sans-serif;
+      text-align: left;
+      padding-top: 5px;
+      margin-left: 138px;
+      color: #ffffff;
+      font-weight: normal;
+      font-size: 32px;
+  }
+
+    .Start_button{
+      background-color: #74CAC3;
+      color: #ffffff;
+      font-size: 24px;
+      border: 2px solid #ffffff;
+      border-radius: 49px;
+      height: 62px;
+      width: 228px;
+      cursor: pointer;
+      padding-top: 5px;
+      margin-left: 230px;
+      margin-top: 50px;
+    }
+
+    .Start_button:hover{
+      background-color: #13C4B4;
+      color: #ffffff;
+      transition: background-color 0.8s, color 0.8s;
+    }
+
+    .Electric_img{
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      top: 150px;
+      right: 100px;
+    }

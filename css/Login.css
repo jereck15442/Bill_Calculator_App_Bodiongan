@@ -1,0 +1,117 @@
+body{
+    background-color: #13C4B4;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.container{
+    display: flex;
+    margin-top: 50px;
+    justify-content: space-evenly;
+}
+
+.image{
+    background-color: #94F9F0;
+    width: 500px;
+    height: 600px;
+    border-radius: 50px;
+    margin-top: 50px;
+    
+}
+
+h4{
+    font-family: Poppins, sans-serif;   
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    font-size: 64px;
+
+}
+
+.login-form{
+    display: flex;
+    color: rgb(255, 255, 255);
+    flex-direction: column;
+    padding: 86px;
+    background-color: rgba(217, 217, 217, 0.5);
+    border-radius: 30px;
+    height: 600px;
+    width: 500px;
+}
+
+input{
+    margin-top: 20px;
+    height: 80px;
+    border-radius: 20px;
+    border: none;
+    padding-left: 30px;
+    margin-top: 40px;
+    font-size: 20px;
+    background: transparent;
+    border: 2px solid #FFFFFF;
+}
+
+.Login_Btn{
+    margin-top: 50px;
+    margin-left: 40px;
+    height: 50px;
+    width: 440px;
+    border-radius: 18px;
+    border: none;
+    background-color:  #1D9DB4;
+    color: #FFFFFF; 
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 15px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.Login_Btn:hover{
+    background-color: #13C4B4;
+    color: #0d4953;
+    text-decoration: none;
+}
+
+a{
+    font-family: Poppins, sans-serif;
+    margin-left: 350px;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    font-size: 18.5px;
+    margin-top: 14px;
+}
+
+a:hover{
+    text-decoration: underline;
+    color: #FFFFFF;
+}
+
+.Register_Btn{
+    margin-top: 50px;
+    margin-left: 100px;
+    height: 50px;
+    width: 300px;
+    border-radius: 18px;
+    border: none;
+    background-color:  #1D9DB4;
+    color: #FFFFFF; 
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    padding-top: 15px;
+    text-decoration: none;
+}
+
+.Register_Btn:hover{
+    background-color: #13C4B4;
+    color: #0d4953;
+    text-decoration: none;
+}
