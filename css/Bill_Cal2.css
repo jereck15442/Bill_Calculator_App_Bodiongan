@@ -96,21 +96,23 @@
       font-size: 32px;
   }
 
-    .Start_button{
+  .Start{
+    margin-top: 80px;
+  }
+    .Start-button{
       background-color: #74CAC3;
       color: #ffffff;
       font-size: 24px;
       border: 2px solid #ffffff;
       border-radius: 49px;
-      height: 62px;
-      width: 228px;
       cursor: pointer;
-      padding-top: 5px;
+      padding: 20px;
       margin-left: 230px;
-      margin-top: 50px;
+      margin-top: 701px;
+      text-decoration: none;
     }
 
-    .Start_button:hover{
+    .Start-button:hover{
       background-color: #13C4B4;
       color: #ffffff;
       transition: background-color 0.8s, color 0.8s;
