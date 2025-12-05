@@ -3,44 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Register</title>
     <link rel="stylesheet" href="css/Register.css">
 </head>
 <body>
-  
-    <div class="container">
-        <div class="image">
-            <img src="asset/Gemini_Generated_Image_am9ohmam9ohmam9o-removebg-preview 2.png" alt="">
-        </div>
-        <form action="" class="login-form">
-                <h4>Create a new account</h4>
-                <div>
-                    <input type="text" name="username" placeholder="FirstName...">
-                    <input type="text" name="password" placeholder="LastName...">
-                </div>
 
-                <div>
-                    <label for="Male">Male</label>
-                    <input type="radio" id="Male" name="gender" value="Male">
+<div class="container">
 
-                    <label for="Female">Female</label>
-                    <input type="radio" id="Female" name="gender" value="Female">
-
-                    <label for="Custom">Custom</label>
-                    <input type="radio" id="Custom" name="gender" value="Custom">
-                </div>   
-
-                    <input class="Email" type="email" name="Mobile" placeholder="Mobile phone or email..">
-                    <input class="Password" type="password" name="Password" placeholder="Password...">
-                    <input class="Confirm_Password" type="password" name="Confirm password" placeholder="Confirm password...">
-            
-                <a class="Login_Btn" href="Login.html">
-                    Register
-                </a>
-
-
-                <a class="Register_Btn" href="Login.html">Login</a>
-        </form>    
+    <div class="image">
+        <img src="asset/Gemini_Generated_Image_am9ohmam9ohmam9o-removebg-preview 2.png" alt="">
     </div>
+
+    <form class="login-form" onsubmit="event.preventDefault(); handleRegister();">
+        
+        <h4>Create a new account</h4>
+
+   
+        <div class="name-group">
+            <input type="text" id="reg_firstname" placeholder="First Name" required>
+            <input type="text" id="reg_lastname" placeholder="Last Name" required>
+        </div>
+
+
+        <input class="Email" type="email" id="reg_email" placeholder="Email" required>
+        <input class="Password" type="password" id="reg_password" placeholder="Password" required>
+        <input class="Confirm_Password" type="password" id="reg_confirm_password" placeholder="Confirm password" required>
+
+       
+        <input type="submit" class="Login_Btn" value="Register">
+
+    
+        <a class="Register_Btn" href="Login.html">Login</a>
+
+    </form>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        await redirectIfAuthenticated();
+    });
+
+    async function handleRegister() {
+
+        const firstname = document.getElementById("reg_firstname").value.trim();
+        const lastname  = document.getElementById("reg_lastname").value.trim();
+        const email     = document.getElementById("reg_email").value.trim();
+        const password  = document.getElementById("reg_password").value;
+        const confirm   = document.getElementById("reg_confirm_password").value;
+
+        if (!firstname || !lastname || !email || !password || !confirm) {
+            alert("Please fill in all fields!");
+            return;
+        }
+
+        if (password !== confirm) {
+            alert("Passwords do not match!");
+            return;
+        }
+
+        if (password.length < 6) {
+            alert("Password must be at least 6 characters long!");
+            return;
+        }
+
+        // Disable button
+        const submitBtn = document.querySelector('.Login_Btn');
+        submitBtn.value = "Registering...";
+        submitBtn.disabled = true;
+
+        try {
+            const { data, error } = await supabaseClient.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        first_name: firstname,
+                        last_name: lastname
+                    }
+                }
+            });
+
+            if (error) {
+                alert("Registration failed: " + error.message);
+                submitBtn.value = "Register";
+                submitBtn.disabled = false;
+                return;
+            }
+
+            alert("Registration successful! Please check your email to verify your account.");
+            window.location.href = "Login.html";
+
+        } catch (error) {
+            alert("Unexpected error: " + error.message);
+        }
+
+        submitBtn.value = "Register";
+        submitBtn.disabled = false;
+    }
+
+    async function redirectIfAuthenticated() {
+        const session = await checkAuth();
+        if (session) window.location.href = "Login.html";
+    }
+</script>
+
 </body>
 </html>

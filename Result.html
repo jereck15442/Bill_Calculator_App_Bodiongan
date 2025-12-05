@@ -3,74 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Results</title>
     <link rel="stylesheet" href="css/result.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     
     <div class="container">
-     
-        <div class="img_Recent">
-            <img class="img_dash" src="asset/Gemini_Generated_Image_am9ohmam9ohmam9o-removebg-preview 2.png" alt="">
-
-            <h1 class="Recent_Results">Recent Results</h1>
-        </div>
-
-        <div class="DashBoard">    
-
-            <p>Welcome Back!!</p>   
-
-            <div class="nav">
-                <div class="DashBoard_Box">
-                    <img src="asset/image-removebg-preview (22) 1.png" alt="">
-                    <a class="Dash">DashBoard</a>
-                </div>
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="welcome-text">Welcome Back!!</div>
             
-                 <div class="Profile_Box">
-                <img src="asset/User.png" alt="">
-                <a class="Profile" href="Profile.html">Profile</a>
-                 </div>      
+            <div class="nav">
+                <a class="nav-link" href="DashBoard.html">
+                    <div class="nav-item">
+                        <img src="asset/image-removebg-preview (22) 1.png" alt="Dashboard Icon">
+                        DashBoard
+                    </div>
+                </a>
+                <a class="nav-link" href="Profile.html">
+                    <div class="nav-item">
+                        <img src="asset/User.png" alt="Profile Icon">
+                        Profile
+                    </div>
+                </a>
+                <a class="nav-link" href="Calculator.html">
+                    <div class="nav-item">
+                        <img src="asset/Rectangle 33.png" alt="Calculator Icon">
+                        Calculator
+                    </div>
+                </a>
 
-                <div class="Calculator_Box">
-                <img src="asset/Rectangle 33.png" alt="">
-                <a class="Calculator">Calculator</a>
-                </div>
-
-                <div class="Result_Box">
-                <img src="asset/Rectangle 33 (1).png" alt="">
-                <a class="Results">Result</a>
+                <a class="nav-link" href="Result.html">
+                    <div class="nav-item">
+                        <img src="asset/Rectangle 33 (1).png" alt="Results Icon">
+                        Result
+                    </div>
+                </a>
             </div>
         </div>
-            <div>
-               <table>
-                <tr>
-                    <th>Month</th>
-                    <th>kWh</th>
-                    <th>Rate</th>
-                    <th>Total</th>
-                    <th>ACtions</th>
-                </tr>
-                <tr>
-                    <td>September</td>
-                     <td>120</td>
-                     <td>18</td>
-                    <td>2160.00</td>
-                    <td><img src="asset/🗑.png" alt=""><button href="">delete</button></td>
-                </tr>
-                <tr>
-                    <td>October</td>
-                    <td>150</td>
-                    <td>20</td>
-                    <td>3000.00</td>
-                    <td><img src="asset/🗑.png" alt=""><button href="">delete</button></td>
-                </tr>
 
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="title-section">
+                    <h1 class="Recent_Results">RECENT RESULTS</h1>
+                </div>
+            </div>
+
+            <!-- Results Table -->
+            <div id="result"  class="results-container">
+                <h2 class="results-title">History of Calculations</h2>
+                <table id="myTable" class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Power Consumption (kWh)</th>
+                            <th>Cost Per kWh (₱)</th>
+                            <th>Total Amount (₱)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                     <tbody>
+                        <tr class="empty-row">
+                            <td colspan="5" class="empty-message">No calculations yet. <a href="Calculator.html">Calculate your first bill</a></td>
+                        </tr>
+                    </tbody>
                 </table>
-             </div>
-       </div>
-
+            </div>
+        </div>
     </div>
 
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Calculation</h2>
+            <form id="editForm">
+                <input type="hidden" id="editId">
+                <div class="form-group">
+                    <label for="editMonth">Month:</label>
+                    <input type="text" id="editMonth" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPower">Power Consumption (kWh):</label>
+                    <input type="number" step="0.01" id="editPower" required>
+                </div>
+                <div class="form-group">
+                    <label for="editRate">Cost Per kWh (₱):</label>
+                    <input type="number" step="0.01" id="editRate" required>
+                </div>
+                <button type="submit" class="save-btn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const session = await initAuth();
+            if (session) {
+                await loadCalculations();
+            }
+
+            if (session) {
+                const user = await getCurrentUser();
+                if (user) {
+                    const welcomeText = document.querySelector('.Email');
+                    const userName = user.user_metadata?.full_name || user.user_metadata.first_name;
+                    const lastname = user.user_metadata?.full_name || user.user_metadata.last_name;
+                    if (welcomeText) {
+                        welcomeText.textContent = `${userName} ${lastname}`;
+                    }
+                }
+            }
+
+            const modal = document.getElementById("editModal");
+            const closeBtn = document.querySelector(".close");
+            
+            closeBtn.onclick = function() {
+                modal.style.display = "none";
+            }
+            
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            document.getElementById('editForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await updateCalculation();
+            });
+        });
+
+        async function loadCalculations() {
+            const user = await getCurrentUser();
+            if (!user) {
+                return;
+            }
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('calculations')
+                    .select('*')
+                    .eq('user_id', user.id)
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error('Error loading calculations:', error);
+                    alert('Error loading calculations: ' + error.message);
+                    return;
+                }
+
+                const table = document.getElementById("myTable");
+                const tbody = table.querySelector('tbody');
+                
+                tbody.innerHTML = '';
+
+                if (data && data.length > 0) {
+                    data.forEach(calc => {
+                        var row = tbody.insertRow();
+                        
+                        var cellMonth = row.insertCell(0);
+                        var cellPowerConsumption = row.insertCell(1);
+                        var cellCostPerKwh = row.insertCell(2);
+                        var cellResult = row.insertCell(3);
+                        var cellActions = row.insertCell(4);
+
+                        cellMonth.innerHTML = calc.month;
+                        cellPowerConsumption.innerHTML = parseFloat(calc.power_consumption).toFixed(2);
+                        cellCostPerKwh.innerHTML = "₱ " + parseFloat(calc.cost_per_kwh).toFixed(2);
+                        cellResult.innerHTML = "₱ " + parseFloat(calc.result).toFixed(2);
+                        
+                        cellActions.innerHTML = `
+                            <button class="action-btn edit-btn" onclick="openEditModal('${calc.id}', '${calc.month}', ${calc.power_consumption}, ${calc.cost_per_kwh})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="action-btn delete-btn" onclick="deleteCalculation('${calc.id}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        `;
+                    });
+                } else {
+                    var emptyRow = tbody.insertRow();
+                    emptyRow.className = 'empty-row';
+                    var emptyCell = emptyRow.insertCell(0);
+                    emptyCell.colSpan = 5;
+                    emptyCell.className = 'empty-message';
+                    emptyCell.innerHTML = 'No calculations yet. <a href="Calculator.html">Calculate your first bill</a>';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error loading calculations: ' + error.message);
+            }
+        }
+
+        function openEditModal(id, month, power, rate) {
+            document.getElementById('editId').value = id;
+            document.getElementById('editMonth').value = month;
+            document.getElementById('editPower').value = power;
+            document.getElementById('editRate').value = rate;
+            document.getElementById('editModal').style.display = "block";
+        }
+
+        async function updateCalculation() {
+            const id = document.getElementById('editId').value;
+            const month = document.getElementById('editMonth').value;
+            const power = parseFloat(document.getElementById('editPower').value);
+            const rate = parseFloat(document.getElementById('editRate').value);
+            const result = power * rate;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('calculations')
+                    .update({
+                        month: month,
+                        power_consumption: power,
+                        cost_per_kwh: rate,
+                        result: result,
+                    })
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                document.getElementById('editModal').style.display = "none";
+                await loadCalculations();
+            } catch (error) {
+                console.error('Error updating calculation:', error);
+                alert('Error updating calculation: ' + error.message);
+            }
+        }
+
+        async function deleteCalculation(id) {
+            if (!confirm('Are you sure you want to delete this calculation?')) {
+                return;
+            }
+
+            try {
+                const { error } = await supabaseClient
+                    .from('calculations')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                await loadCalculations();
+            } catch (error) {
+                console.error('Error deleting calculation:', error);
+                alert('Error deleting calculation: ' + error.message);
+            }
+        }
+
+        async function handleLogout() {
+            const success = await signOut();
+            if (success) {
+                window.location.href = 'login.html';
+            } else {
+                alert('Error logging out. Please try again.');
+            }
+        }
+    </script>
 </body>
 </html>
-

@@ -3,66 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Calculator</title>
     <link rel="stylesheet" href="css/Calculator.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     
-     <div class="container">
-     
-        <div class="img_Recent">
-            <img class="img_dash" src="asset/Gemini_Generated_Image_am9ohmam9ohmam9o-removebg-preview 2.png" alt="">
-
-            <h1 class="Profile_Results">Profile</h1>
-        </div>
-
-        <div class="DashBoard">    
-
-            <p>Welcome Back!!</p>   
-
-            <div class="nav">
-                <div class="DashBoard_Box">
-                    <img src="asset/image-removebg-preview (22) 1.png" alt="">
-                    <a class="Dash" href="DashBoard.html">DashBoard</a>
-                </div>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="welcome-text">Welcome Back!!
+                <div style="color: rgb(32, 32, 32);" class="Email"></div>   
+            </div>
             
-                 <div class="Profile_Box">
-                <img src="asset/User.png" alt="">
-                <a class="Profile">Profile</a>
-                 </div>      
+            <div class="nav">
+                <a class="nav-link" href="DashBoard.html">
+                    <div class="nav-item">
+                        <img src="asset/image-removebg-preview (22) 1.png" alt="Dashboard Icon">
+                        DashBoard
+                    </div>
+                </a>
+                <a class="nav-link" href="Profile.html">
+                    <div class="nav-item">
+                        <img src="asset/User.png" alt="Profile Icon">
+                        Profile
+                    </div>
+                </a>
+                <a class="nav-link" href="Calculator.html">
+                    <div class="nav-item">
+                        <img src="asset/Rectangle 33.png" alt="Calculator Icon">
+                        Calculator
+                    </div>
+                </a>
 
-                <div class="Calculator_Box">
-                <img src="asset/Rectangle 33.png" alt="">
-                <a class="Calculator">Calculator</a>
-                </div>
-
-                <div class="Result_Box">
-                <img src="asset/Rectangle 33 (1).png" alt="">
-                <a class="Results">Result</a>
+                <a class="nav-link" href="Result.html">
+                    <div class="nav-item">
+                        <img src="asset/Rectangle 33 (1).png" alt="Results Icon">
+                        Result
+                    </div>
+                </a>
             </div>
         </div>
-              
-        <div class="main">
-            <form action="" class="Username">
 
-             <p class="User">Month</p>
-             <input type="date" name="username">
-              
-             <p class="User">Power Consumption</p>
-             <input type="text" name="username" placeholder="">   
-                            
-             <p class="User">Cost per kwh</p> 
-             <input type="text" name="username" placeholder="">   
-                            
-             <button>Calculate</button>
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="title-section">
+                    <h1 class="Profile_Results">CALCULATOR</h1>
+                </div>
+            </div>
 
-             <p style="margin-top: 20px;">Your electric bill is: ₱  2160.00</p>
-             <button>Save</button>
-            </form>  
+            <!-- Calculator Form -->
+            <div class="calculator-container">
+                <h2 class="calculator-title">Electricity Bill Calculator</h2>
+                
+                <form onsubmit="event.preventDefault();">
+                    <div class="form-group">
+                        <label for="month">Month</label>
+                        <input
+                            id="month"
+                            type="text"
+                            placeholder="e.g., January 2024"
+                            required
+                        />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="consumption">Power Consumption (kWh)</label>
+                            <input
+                                id="power_consumption"
+                                type="number"
+                                step="0.01"
+                                placeholder="Enter power consumption"
+                                required
+                            />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="rate">Cost per kWh (₱)</label>
+                         <input
+                            id="cost_per_kwh"
+                            type="number"
+                            step="0.01"
+                            placeholder="Enter cost per kWh"
+                            required
+                          />
+                    </div>
+                    
+                     <button id="btn_calculate" class="calculate-btn" type="button">Calculate</button>
+                    
+                    <div class="result-box">
+                        <div class="result-text">Your electric bill is:</div>
+                        <div id="result" class="result-amount"></div>
+                    </div>
+                </form>
+            </div>
         </div>
-       </div>
-
     </div>
 
+       <!-- Supabase CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="js/supabase-config.js"></script>
+        <script src="js/auth.js"></script>
+        <script>
+             // Check authentication on page load
+            document.addEventListener('DOMContentLoaded', async () => {
+                const session = await initAuth();
+                if (session) {
+                    const user = await getCurrentUser();
+                    if (user) {
+                        // Update welcome message with user name if available
+                        const welcomeText = document.querySelector('.Email');
+                        const userName = user.user_metadata?.full_name || user.user_metadata.first_name;
+                        const lastname = user.user_metadata?.full_name || user.user_metadata.last_name;
+                        if (welcomeText) {
+                            welcomeText.textContent = `${userName} ${lastname}`;
+                        }
+                    }
+                }
+            });
+
+            btn_calculate.addEventListener("click", async function () {
+                let month = document.getElementById("month");
+                let power_consumption =
+                    document.getElementById("power_consumption");
+                let cost_per_kwh = document.getElementById("cost_per_kwh");
+                let result = document.getElementById("result");
+
+                // Validate inputs
+                if (
+                    !month.value ||
+                    !power_consumption.value ||
+                    !cost_per_kwh.value
+                ) {
+                    alert("Please fill in all fields!");
+                    return;
+                }
+
+                // Get current user
+                const user = await getCurrentUser();
+                if (!user) {
+                    alert("You must be logged in to save calculations!");
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                // Calculate result
+                let result_value =
+                    parseFloat(cost_per_kwh.value) *
+                    parseFloat(power_consumption.value);
+
+                // Display result message
+                result.innerHTML = `₱ ${result_value.toFixed(
+                    2
+                )}`;
+
+                // Save to Supabase
+                try {
+                    const { data, error } = await supabaseClient
+                        .from("calculations")
+                        .insert([
+                            {
+                                user_id: user.id,
+                                month: month.value,
+                                power_consumption: parseFloat(
+                                    power_consumption.value
+                                ),
+                                cost_per_kwh: parseFloat(cost_per_kwh.value),
+                                result: result_value,
+                            },
+                        ])
+                        .select();
+
+                    if (error) {
+                        console.error("Error saving calculation:", error);
+                        alert(
+                            "Calculation saved locally, but failed to save to database: " +
+                                error.message
+                        );
+                    } else {
+                        console.log("Calculation saved:", data);
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("Error saving calculation: " + error.message);
+                }
+
+            });
+
+            async function handleLogout() {
+                const success = await signOut();
+                if (success) {
+                    window.location.href = "login.html";
+                } else {
+                    alert("Error logging out. Please try again.");
+                }
+            }
+        </script>
 </body>
 </html>

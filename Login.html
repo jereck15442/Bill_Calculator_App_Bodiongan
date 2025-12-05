@@ -12,15 +12,71 @@
         <div class="image">
             <img src="asset/Gemini_Generated_Image_am9ohmam9ohmam9o-removebg-preview 2.png" alt="">
         </div>
-        <form action="" class="login-form">
+        <form action="" class="login-form" onsubmit="event.preventDefault(); handleLogin();">
                 <h4>Log in</h4>
-                <input type="text" name="username" placeholder="User name...">
-                <input type="password" name="password" placeholder="Password...">
-                <a class="Login_Btn" href="DashBoard.html">Log in</a>
-                <a href="">Forgot password?</a>
+                <input type="text" id="email" name="email" placeholder="Email">
+                <input type="password" id="password" name="password" placeholder="Password">
+                 <input class="Login_Btn"  type="submit" value="Login" />
 
                 <a class="Register_Btn" href="Register.html">Register</a>
         </form>    
     </div>
+   
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="js/supabase-config.js"></script>
+        <script>
+            // Redirect if already logged in
+            document.addEventListener("DOMContentLoaded", async () => {
+                await redirectIfAuthenticated();
+            });
+
+            async function handleLogin() {
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+
+                if (!email || !password) {
+                    alert("Please fill in all fields!");
+                    return;
+                }
+
+                // Show loading state
+                const submitBtn = document.querySelector(
+                    'input[type="submit"]'
+                );
+                const originalValue = submitBtn.value;
+                submitBtn.value = "Logging in...";
+                submitBtn.disabled = true;
+
+                try {
+                    const { data, error } =
+                        await supabaseClient.auth.signInWithPassword({
+                            email: email,
+                            password: password,
+                        });
+
+                    if (error) {
+                        alert("Login failed: " + error.message);
+                        submitBtn.value = originalValue;
+                        submitBtn.disabled = false;
+                        return;
+                    }
+
+                    // Success - redirect to dashboard
+                    window.location.href = "DashBoard.html";
+                } catch (error) {
+                    alert("An error occurred: " + error.message);
+                    submitBtn.value = originalValue;
+                    submitBtn.disabled = false;
+                }
+            }
+
+            // Redirect if authenticated
+            async function redirectIfAuthenticated() {
+                const session = await checkAuth();
+                if (session) {
+                    window.location.href = "DashBoard.html";
+                }
+            }
+        </script>
 </body>
 </html>

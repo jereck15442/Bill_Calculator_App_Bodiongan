@@ -3,83 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Profile</title>
     <link rel="stylesheet" href="css/Profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     
-     <div class="container">
-     
-        <div class="img_Recent">
-            <img class="img_dash" src="asset/Gemini_Generated_Image_am9ohmam9ohmam9o-removebg-preview 2.png" alt="">
-
-            <h1 class="Profile_Results">Profile</h1>
-        </div>
-
-        <div class="DashBoard">    
-
-            <p>Welcome Back!!</p>   
-
-            <div class="nav">
-                <div class="DashBoard_Box">
-                    <img src="asset/image-removebg-preview (22) 1.png" alt="">
-                    <a class="Dash" href="DashBoard.html">DashBoard</a>
-                </div>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="welcome-text">Welcome Back!!</div>
             
-                 <div class="Profile_Box">
-                <img src="asset/User.png" alt="">
-                <a class="Profile">Profile</a>
-                 </div>      
+            <div class="nav">
+                <a class="nav-link" href="DashBoard.html">
+                    <div class="nav-item">
+                        <img src="asset/image-removebg-preview (22) 1.png" alt="Dashboard Icon">
+                        DashBoard
+                    </div>
+                </a>
+                <a class="nav-link" href="Profile.html">
+                    <div class="nav-item">
+                        <img src="asset/User.png" alt="Profile Icon">
+                        Profile
+                    </div>
+                </a>
+                <a class="nav-link" href="Calculator.html">
+                    <div class="nav-item">
+                        <img src="asset/Rectangle 33.png" alt="Calculator Icon">
+                        Calculator
+                    </div>
+                </a>
 
-                <div class="Calculator_Box">
-                <img src="asset/Rectangle 33.png" alt="">
-                <a class="Calculator">Calculator</a>
-                </div>
-
-                <div class="Result_Box">
-                <img src="asset/Rectangle 33 (1).png" alt="">
-                <a class="Results">Result</a>
+                <a class="nav-link" href="Result.html">
+                    <div class="nav-item">
+                        <img src="asset/Rectangle 33 (1).png" alt="Results Icon">
+                        Result
+                    </div>
+                </a>
             </div>
         </div>
-                <div class="EditProfile">
-                    <img src="asset/ProFile_Icon.png" alt="" class="Profile_btn">
-                    <a href="" class="Edit_Profile">Edit Profile</a> 
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="title-section">
+                    <h1 class="Profile_Results">PROFILE</h1>
+                </div>
+            </div>
+
+            <!-- Profile Content -->
+            <div class="profile-container">
+                <!-- Profile Actions -->
+                <div class="profile-actions">
+                    <div class="action-item">
+                        <img src="asset/ProFile_Icon.png" alt="Edit Profile Icon">
+                        <a href="" class="action-text">Edit Profile</a>
+                    </div>
+                    
+                    <div class="action-item">
+                        <img src="asset/Change_Password.png" alt="Change Password Icon">
+                        <a href="editPass.html" class="action-text">Change Password</a>
+                    </div>
+                    
+                    <div class="action-item">
+                        <img src="asset/Icon Logout.png" alt="Logout Icon">
+                        <a href="#" onclick="handleLogout(); return false;" class="action-text">Log out</a>
+                    </div>
                 </div>
 
-                    <div>
-                        <div class="Change_password">
-                        <img src="asset/Change_Password.png" alt="" class="Changepassword">
-                        <a href="" class="Edit_Profile">Change password</a> 
-                    </div>
-
-                    <div>
-                         <div class="Logout">
-                        <img src="asset/Icon Logout.png" alt="" class="Log_out">
-                        <a href="" class="Logout_txt">Log out</a> 
-                    </div>
-
-                         <div>
-                            <form action="" class="Username">
-
-                            <p class="User">Username</p>
-                            <input type="text" name="username" placeholder="Username...">
-                            
-                            <p class="User">Email</p>
-                            <input type="text" name="username" placeholder="example@gmail.com">   
-                            
-                            <p class="User">Address</p> 
-                            <input type="text" name="username" placeholder="address">   
-
-                            <p class="User">Phone</p> 
-                            <input type="text" name="username" placeholder="+44 555 5555 55">   
-                            
-                            <button>Save</button>
-                            </form>  
-                            
+                <!-- Profile Form -->
+                <div class="profile-form">
+                    <h2 class="form-title">Personal Information</h2>
+                    
+                    <form onsubmit="event.preventDefault(); handleProfileUpdate();">
+                        <div style="display: flex; gap: 20px;">
+                            <div class="form-group" style="width: 100%;">
+                                <label for="firstname">Firstname</label>
+                                <input type="text" id="firstname" name="firstname" placeholder="Firstname...">
+                            </div>
+                            <div class="form-group" style="width: 100%;">
+                                <label for="lastname">Lastname</label>
+                                <input type="text" id="lastname" name="lastname" placeholder="Lastname...">
+                            </div>
                         </div>
-       </div>
-
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="Your email" />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="profile_address" name="profile_address" placeholder="Your address">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="text" id="profile_phone" name="profile_phone" placeholder="+44 555 5555 55">
+                        </div>
+                        
+                        <input type="button" class="save-btn" value="Save">
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Check authentication on page load and load user data
+        document.addEventListener('DOMContentLoaded', async () => {
+            const session = await initAuth();
+            if (session) {
+                await loadUserProfile();
+            }
+        });
 
+        async function loadUserProfile() {
+            const user = await getCurrentUser();
+            if (user) {
+                // Populate form with user data
+                if (user.user_metadata?.first_name) {
+                    document.getElementById('firstname').value = user.user_metadata.first_name;
+                }
+                if (user.user_metadata?.last_name) {
+                    document.getElementById('lastname').value = user.user_metadata.last_name;
+                }
+                if (user.email) {
+                    document.getElementById('email').value = user.email;
+                }
+            }
+        }
+
+        async function handleProfileUpdate() {
+            const firstname = document.getElementById('firstname').value;
+            const lastname = document.getElementById('lastname').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('profile_phone').value;
+            const address = document.getElementById('profile_address').value;
+
+            const user = await getCurrentUser();
+            if (!user) {
+                alert('You must be logged in to update your profile!');
+                return;
+            }
+
+            try {
+                // Update user metadata
+                const { data, error } = await supabaseClient.auth.updateUser({
+                    data: {
+                        first_name: firstname,
+                        last_name: lastname,
+                        phone: phone,
+                        address: address
+                    }
+                });
+
+                if (error) {
+                    alert('Error updating profile: ' + error.message);
+                    return;
+                }
+
+                alert('Profile updated successfully!');
+            } catch (error) {
+                alert('Error updating profile: ' + error.message);
+            }
+        }
+
+        async function handleLogout() {
+            const success = await signOut();
+            if (success) {
+                window.location.href = 'Login.html';
+            } else {
+                alert('Error logging out. Please try again.');
+            }
+        }
+    </script>
 </body>
 </html>

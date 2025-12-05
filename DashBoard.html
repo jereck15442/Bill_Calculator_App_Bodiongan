@@ -3,69 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="css/DashBoard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     
     <div class="container">
-     
-        <div class="img_Recent">
-            <img class="img_dash" src="asset/Gemini_Generated_Image_am9ohmam9ohmam9o-removebg-preview 2.png" alt="">
-
-            <h1 class="Recent_Results">Recent Results</h1>
-        </div>
-
-        <div class="DashBoard">    
-
-            <p>Welcome Back!!</p>   
-
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="welcome-text">Welcome Back!!
+                <div style="color: rgb(32, 32, 32);" class="Email"></div>   
+            </div>
+                     
             <div class="nav">
-                <div class="DashBoard_Box">
-                    <img src="asset/image-removebg-preview (22) 1.png" alt="">
-                    <a class="Dash">DashBoard</a>
-                </div>
-            
-                 <div class="Profile_Box">
-                <img src="asset/User.png" alt="">
-                <a class="Profile" href="Profile.html">Profile</a>
-                 </div>      
+                <a class="nav-link" href="DashBoard.html">
+                    <div class="nav-item">
+                        <img src="asset/image-removebg-preview (22) 1.png" alt="Dashboard Icon">
+                        DashBoard
+                    </div>
+                </a>
+                <a class="nav-link" href="Profile.html">
+                    <div class="nav-item">
+                        <img src="asset/User.png" alt="Profile Icon">
+                        Profile
+                    </div>
+                </a>
+                <a class="nav-link" href="Calculator.html">
+                    <div class="nav-item">
+                        <img src="asset/Rectangle 33.png" alt="Calculator Icon">
+                        Calculator
+                    </div>
+                </a>
 
-                <div class="Calculator_Box">
-                <img src="asset/Rectangle 33.png" alt="">
-                <a class="Calculator">Calculator</a>
-                </div>
-
-                <div class="Result_Box">
-                <img src="asset/Rectangle 33 (1).png" alt="">
-                <a class="Results">Result</a>
+                <a class="nav-link" href="Result.html">
+                    <div class="nav-item">
+                        <img src="asset/Rectangle 33 (1).png" alt="Results Icon">
+                        Result
+                    </div>
+                </a>
             </div>
         </div>
-            <div>
-               <table>
-                <tr>
-                    <th>Month</th>
-                    <th>Result</th>
-                </tr>
-                <tr>
-                    <td>September</td>
-                    <td>2160.00</td>
-                </tr>
-                <tr>
-                    <td>October</td>
-                    <td>3000.00</td>
-                </tr>
-                <tr>
-                    <td>November</td>
-                    <td>10250.00</td>
-                </tr>
 
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="title-section">
+                    <h1 class="Recent_Results">DASHBOARD</h1>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3>Total Usage This Month</h3>
+                    <div class="stat-value">150 kWh</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Total Bill</h3>
+                    <div class="stat-value">₱ 2,700.00</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Average Month Usage</h3>
+                    <div class="stat-value">5.0 kWh</div>
+                </div>
+            </div>
+
+            <!-- Recent Bills Table -->
+            <div  id="result" class="table-container">
+                <h2 class="table-title">Recent Bills</h2>
+                <table id="myTable" class="bill-table">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Power Consumption (kWh)</th>
+                            <th>Cost Per kWh (₱)</th>
+                            <th>Total Amount (₱)</th>
+                        </tr>
+                    </thead>
+                     <tbody>
+                        <!-- Rows will be inserted here via JavaScript -->
+                        <tr class="empty-row">
+                            <td colspan="4" class="empty-message">No calculations yet. <a href="Calculator.html">Calculate your first bill</a></td>
+                        </tr>
+                    </tbody>
                 </table>
-             </div>
-       </div>
-
+            </div>
+        </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
 
+
+
+         // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            const session = await initAuth();
+            if (session) {
+                await loadCalculations();
+            }
+
+            if (session) {
+                const user = await getCurrentUser();
+                if (user) {
+                    // Update welcome message with user name if available
+                    const welcomeText = document.querySelector('.Email');
+                    const userName = user.user_metadata?.full_name || user.user_metadata.first_name;
+                    const lastname = user.user_metadata?.full_name || user.user_metadata.last_name;
+                    if (welcomeText) {
+                        welcomeText.textContent = `${userName} ${lastname}`;
+                    }
+                }
+            }
+        });
+
+
+        async function loadCalculations() {
+            const user = await getCurrentUser();
+            if (!user) {
+                return;
+            }
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('calculations')
+                    .select('*')
+                    .eq('user_id', user.id)
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error('Error loading calculations:', error);
+                    alert('Error loading calculations: ' + error.message);
+                    return;
+                }
+
+                const table = document.getElementById("myTable");
+                const tbody = table.querySelector('tbody');
+                
+                // Clear existing rows (except empty message)
+                tbody.innerHTML = '';
+
+                if (data && data.length > 0) {
+                    // Add each calculation as a row
+                    data.forEach(calc => {
+                        var row = tbody.insertRow();
+                        
+                        var cellMonth = row.insertCell(0);
+                        var cellPowerConsumption = row.insertCell(1);
+                        var cellCostPerKwh = row.insertCell(2);
+                        var cellResult = row.insertCell(3);
+
+                        cellMonth.innerHTML = calc.month;
+                        cellPowerConsumption.innerHTML = parseFloat(calc.power_consumption).toFixed(2);
+                        cellCostPerKwh.innerHTML = "₱ " + parseFloat(calc.cost_per_kwh).toFixed(2);
+                        cellResult.innerHTML = "₱ " + parseFloat(calc.result).toFixed(2);
+                    });
+                } else {
+                    // Show empty message
+                    var emptyRow = tbody.insertRow();
+                    emptyRow.className = 'empty-row';
+                    var emptyCell = emptyRow.insertCell(0);
+                    emptyCell.colSpan = 4;
+                    emptyCell.className = 'empty-message';
+                    emptyCell.innerHTML = 'No calculations yet. <a href="calculator_page.html">Calculate your first bill</a>';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error loading calculations: ' + error.message);
+            }
+        }
+
+        async function handleLogout() {
+            const success = await signOut();
+            if (success) {
+                window.location.href = 'login.html';
+            } else {
+                alert('Error logging out. Please try again.');
+            }
+        }
+    </script>
 </body>
 </html>
-
